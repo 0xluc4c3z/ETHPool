@@ -80,7 +80,7 @@ contract ETHPool is AccessControl, ReentrancyGuard{
 
     /* --------------------------------- Functions -------------------------------- */
     /// @notice Receives an ETH deposit and updates the user's balance.
-    receive() 
+    function deposit() 
         external
         payable
         nonReentrant
@@ -130,6 +130,7 @@ contract ETHPool is AccessControl, ReentrancyGuard{
         return s_totalRewardBalance;
     }
 
+    /// @return the current total of staked user tokens. 
     function getUserBalance(address _account) public view returns(uint256){
         return s_client[_account].balance;
     }
