@@ -1,12 +1,25 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
+import { ETHPool__factory } from "../typechain-types";
 
 describe("Token", function () {
-  it("Should return name Token", async function () {
-    const Token = await ethers.getContractFactory("Token");
-    const token = await Token.deploy();
-    await token.deployed();
+  
+  beforeEach(async function(){
+    [this.deployer, this.alice, this.bob] = await ethers.getSigners();
 
-    expect(await token.name()).to.equal("Token");
-  });
+    this.ETHPool = await new ETHPool__factory(this.deployer).deploy();
+
+    this.ETHPool = await ethers.getContractFactory("ETHPool");
+
+    this.ethpool = await this.ETHPool.deploy();
+
+    await this.ethpool.deployed();
+  }
+  
+  describe("init", function () {
+
+    it("anda", async function () {
+      expect(await this.ethpool.connect(this.deployer).getPoolBalance()).to.be.eq(0);
+    })
+  })
 });
