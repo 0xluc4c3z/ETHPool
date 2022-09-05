@@ -6,13 +6,13 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /// @title ETHPool
 
-/* --------------------------------- Errors -------------------------------- */
-
 contract ETHPool is AccessControl, ReentrancyGuard{
 
+    /// @notice The roles present in the pool
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant TEAM_ROLE = keccak256("TEAM_ROLE");
 
+    /// @notice Owner is the Admin role
     constructor() {
         s_owner = msg.sender;
         _setupRole(ADMIN_ROLE, s_owner);
@@ -40,7 +40,7 @@ contract ETHPool is AccessControl, ReentrancyGuard{
 
 
     /* --------------------------------- Structs -------------------------------- */
-    /// 
+    /// @notice Customer account
     struct Client {
         uint256 pendingAmount;
         uint256 balance;
@@ -186,7 +186,7 @@ contract ETHPool is AccessControl, ReentrancyGuard{
 
     /// @notice Claim all the user's pending rewards.
     function claimRewards() public nonReentrant updateUserRewards(msg.sender) {
-        Client memory client = s_client[msg.sender];
+        Client storage client = s_client[msg.sender];
         uint256 pending = client.pendingAmount;
         require(client.pendingAmount > 0, "User has no pending rewards.");
         require(
